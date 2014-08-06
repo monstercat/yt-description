@@ -1,0 +1,22 @@
+{
+  "name": "yt-description",
+  "version": "0.0.0",
+  "description": "update youtube description",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/monstercat/yt-description.git"
+  },
+  "keywords": [
+    "youtube"
+  ],
+  "author": "yx2zhang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/monstercat/yt-description/issues"
+  },
+  "homepage": "https://github.com/monstercat/yt-description"
+}
