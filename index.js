@@ -1,3 +1,4 @@
+
 var argv = require('optimist').argv;
 var async = require('async')
 var mode = argv.mode || 'production'
@@ -6,7 +7,6 @@ var gapi = require('googleapis');
 var OAuth2 = gapi.OAuth2Client;
 
 function updateVideo(param, done){
-  console.log('show update video updated');
   var video = param.video
   var client = param.client
   var oauth = param.oauth
@@ -15,16 +15,12 @@ function updateVideo(param, done){
   var originalDescription = video.snippet.description;
   var newDescription = originalDescription + " haha1 updated haha2"
 
+  video.snippet.description = newDescription;
+
   var resource = {
-    snippet: {
-      title: video.snippet.title,
-      description: newDescription
-    },
-    id: videoId
+    snippet: video.snippet,
+    id: video.snippet.resourceId.videoId
   };
-  
-  console.log('show resource');
-  console.log(resource);
 
   var req = client.youtube.videos.update({
     resource: resource,
@@ -33,10 +29,13 @@ function updateVideo(param, done){
 
   req.withAuthClient(oauth).execute(function(err, res){
     if(err){
-      console.log(video.snippet.resourceId.videoId + "has error:");
+      console.log(videoId + "has error:");
       console.log(err);
       console.log("");
+    }else{
+      console.log(videoId + "updated");
     }
+
     return done(err, res);
   });
 };  
@@ -76,3 +75,4 @@ function updateDescription() {
 };
 
 updateDescription();
+
