@@ -19,7 +19,7 @@
     "url": "https://github.com/monstercat/yt-description/issues"
   },
   "dependencies":{
-    "googleapis": "0.4.6",
+    "googleapis": "*",
     "optimist": "*"
   },
   "homepage": "https://github.com/monstercat/yt-description"
