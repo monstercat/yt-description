@@ -1,41 +1,35 @@
 var argv         = require('optimist').argv;
-var gapi = require('googleapis');
 var mode = argv.mode || 'production'
 var credentials  = require('./credentials')[mode];
-var OAuth2 = gapi.auth.OAuth2
-
-var CLIENT_ID = credentials.clientId;
-var CLIENT_SECRET = credentials.clientSecret;
-
-var oauth = new OAuth2(CLIENT_ID, CLIENT_SECRET);
-
-var access_token = credentials.access_token;
-var refresh_token = credentials.refresh_token;  
-var youtube = gapi.youtube({ version: 'v3', auth: oauth });
-
+var gapi = require('googleapis');
+var OAuth2 = gapi.OAuth2Client;
 
 function updateDescription() {
+  gapi.discover('youtube', 'v3').execute(function(err, client){
+    var CLIENT_ID = credentials.client_id;
+    var CLIENT_SECRET = credentials.client_secret;
+    var access_token = credentials.access_token;
+    var refresh_token = credentials.refresh_token;
 
-  oauth.credentials = {
-    access_token: access_token,
-    refresh_token: refresh_token
-  };
+    var oauth = new OAuth2(CLIENT_ID, CLIENT_SECRET);
 
-  console.log('send request');
+    oauth.credentials = {
+      access_token: access_token,
+      refresh_token: refresh_token
+    };
 
-  youtube.channels.list({
-    id: 'UCeDAMjAoztnS1WYGLzB2P_w',
-    part: 'contentDetails',
-    auth: oauth
-  },function(err, res){
-    console.log('show response');
-    if(err){ 
+    var req = client.youtube.channels.list({
+      id: "UCeDAMjAoztnS1WYGLzB2P_w",
+      part: 'contentDetails'
+    });
+
+    req.withAuthClient(oauth)
+
+    req.execute(function(err, res){
       console.log(err)
-    }
-
-    console.log(res);
+      console.log(res);
+    });
   });
-
 }
 
 updateDescription();
