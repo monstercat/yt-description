@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/monstercat/yt-description/issues"
   },
+  "dependencies":{
+    "googleapis": "0.4.6",
+    "optimist": "*"
+  },
   "homepage": "https://github.com/monstercat/yt-description"
 }
