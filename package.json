@@ -20,6 +20,7 @@
   },
   "dependencies":{
     "googleapis": "0.4.6",
+    "yt-playlist": "*",
     "optimist": "*"
   },
   "homepage": "https://github.com/monstercat/yt-description"
