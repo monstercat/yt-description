@@ -20,20 +20,16 @@ function updateVideo(param, done){
       title: video.snippet.title,
       description: newDescription,
     },
-    id: video.snippet.resourceId.videoId
+    id: videoId
   };
+  
+  console.log('show resource');
+  console.log(resource);
 
   var req = client.youtube.videos.update({
-    part: 'snippet,id' 
+    resource: resource,
+    part: 'id,snippet'
   });
-
-  req.body = {
-    id: video.snippet.resourceId.videoId,
-    snippet: {
-      title: video.snippet.title,
-      description: newDescription,
-    }
-  };
 
   req.withAuthClient(oauth).execute(function(err, res){
     if(err){
