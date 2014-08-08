@@ -10,24 +10,16 @@ function updateVideo(param, done){
   var video = param.video
   var client = param.client
   var oauth = param.oauth
-  var videoId = video.snippet.resourceId.videoId
+  var videoId = video.id
 
-  var originalDescription = video.snippet.description;
-  var newDescription = originalDescription + " yx2zhang"
+  video.snippet.description = video.snippet.description + " yx3zhang"
 
   var resource = {
     id: videoId,
-    snippet:{
-      title: video.snippet.title,
-      description: newDescription,
-      categoryId: "1" 
-    }
+    snippet: video.snippet
   };
 
   var req = client.youtube.videos.update({ part: 'id,snippet' }, resource);
-  console.log('show categoryId')
-  console.log(video.snippet)
-  
 
   req.withAuthClient(oauth).execute(function(err, res){
     if(err){
@@ -39,7 +31,7 @@ function updateVideo(param, done){
 
     return done(err, res);
   });
-};  
+};
 
 function updateDescription() {
   gapi.discover('youtube', 'v3').execute(function(err, client){
@@ -65,7 +57,14 @@ function updateDescription() {
 
       update = function(video, cb){
         var param = { video: video, client: client, oauth: oauth }
-        updateVideo(param, cb);
+        playListItemToVideo(param, function(err, video){
+          if(!video){
+            return cb (null);
+          }
+
+          param.video = video;
+          updateVideo(param, cb);
+        });
       }
       
       async.each(vids.items, update, function(err, result){
@@ -74,6 +73,21 @@ function updateDescription() {
     });
   });
 };
+
+function playListItemToVideo(param, done){
+  var client = param.client;
+  var oauth = param.oauth;
+  var videoId = param.video.snippet.resourceId.videoId
+  var req = client.youtube.videos.list({ part: 'id,snippet', id: videoId });
+
+  req.withAuthClient(oauth).execute(function(err, res){
+    if(!res || res.items.length <=0){
+      return doen(null,null);
+    }
+
+    return done(err, res.items[0]);
+  });
+}
 
 updateDescription();
 
