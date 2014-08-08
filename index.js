@@ -13,27 +13,28 @@ function updateVideo(param, done){
   var videoId = video.snippet.resourceId.videoId
 
   var originalDescription = video.snippet.description;
-  var newDescription = originalDescription + " haha1 updated haha2"
-
-  video.snippet.description = newDescription;
+  var newDescription = originalDescription + " yx2zhang"
 
   var resource = {
-    snippet: video.snippet,
-    id: video.snippet.resourceId.videoId
+    id: videoId,
+    snippet:{
+      title: video.snippet.title,
+      description: newDescription,
+      categoryId: "1" 
+    }
   };
 
-  var req = client.youtube.videos.update({
-    resource: resource,
-    part: 'id,snippet'
-  });
+  var req = client.youtube.videos.update({ part: 'id,snippet' }, resource);
+  console.log('show categoryId')
+  console.log(video.snippet)
+  
 
   req.withAuthClient(oauth).execute(function(err, res){
     if(err){
       console.log(videoId + "has error:");
       console.log(err);
-      console.log("");
     }else{
-      console.log(videoId + "updated");
+      console.log(videoId + " updated");
     }
 
     return done(err, res);
