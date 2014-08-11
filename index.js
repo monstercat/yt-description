@@ -7,13 +7,15 @@ var OAuth2 = gapi.OAuth2Client;
 
 function updateVideo(param, done){
   console.log('show update video updated');
+
+  var newMessage = "Monstercat 018 - Frontier is out now! \n Show your support:http://monstercat.com/frontier \n --------- \n"
   var video = param.video
   var client = param.client
   var oauth = param.oauth
   var videoId = video.snippet.resourceId.videoId
 
   var originalDescription = video.snippet.description;
-  var newDescription = originalDescription + " haha1 updated haha2"
+  var newDescription = newMessage + originalDescription
 
   var resource = {
     snippet: {
